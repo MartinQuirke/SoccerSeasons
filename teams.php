@@ -18,13 +18,20 @@
 			include("SoccerSeasons.php");
 			$SoccerSeasons = new SoccerSeasons();	
 			$teams = $SoccerSeasons->getTeamsFromLeague($_GET['league']);
+			for($i=0; $i<sizeof($teams['teams']); $i++){
+					$team=$teams['teams'][$i]['name'];
+					$listTeam[] = $team;	
+         }	
+			sort($listTeam);
 			
 		?>
     </div>
       
       	<div id='left-wrapper'>
     		 	<?php
-					print_r($teams['teams']."</br>");
+					for($j=0;$j<sizeof($listTeam);$j++){
+      print_r($listTeam[$j]."</br>");
+					}
 				?>
     			
    		</div>
