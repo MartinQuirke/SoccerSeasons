@@ -18,7 +18,16 @@ class SoccerSeasons {
 	
 	//Get JSON data of all leagues
 	public function getLeagues() {
-		$s = file_get_contents($this->getApiUri("leagues"),$context);
+		$opts = array(
+ 	 		'http'=>array(
+   			'method'=>"GET",
+    	 		'header'=>"Accept-language: en\r\n" .
+              "Cookie: foo=bar\r\n"
+  				)
+		);
+
+		$context = stream_context_create($opts);
+		$s = file_get_contents($this->getApiUri("leagues"),false, $context);
 		$allLeagues = json_decode($s, true);
 
 		return $allLeagues;
@@ -26,8 +35,8 @@ class SoccerSeasons {
 	
 	//Get a league from league value
 	public function getLeague($leagueCode){
+		$league[] =array();
 		$allLeagues = $this->getLeagues();
-		
 		for($i=0; $i<sizeof($allLeagues); $i++){
 				$code=$allLeagues[$i]['league'];
 				if($code == $leagueCode){
@@ -36,13 +45,33 @@ class SoccerSeasons {
 		}	
 		return $league;
 	}
-		
+	
+ 	//Get Teams from within a league
 	public function getTeamsFromLeague($leagueCode){
+		
+		$opts = array(
+ 	 		'http'=>array(
+   			'method'=>"GET",
+    	 		'header'=>"Accept-language: en\r\n" .
+              "Cookie: foo=bar\r\n"
+  				)
+		);
+
+		$context = stream_context_create($opts);
+		$listTeam = array();
 		$league = $this->getLeague($leagueCode);
 		$teamApi = $league['_links']['teams']['href'];
-		$s = file_get_contents($teamApi,$context);
+		$s = file_get_contents($teamApi, false, $context);
 		$allTeams = json_decode($s,true);
-		return $allTeams;
+		for($i=0; $i<sizeof($allTeams['teams']); $i++){
+					$team=$allTeams['teams'][$i]['name'];
+					$listTeam[] = $team;	
+         }
+ 		if(sizeof($listTeam)>0){
+			sort($listTeam);
+		}
+		
+		return $listTeam;
 	}
 
 }

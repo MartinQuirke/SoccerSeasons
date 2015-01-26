@@ -22,6 +22,18 @@ body{
   top:100px;
   left:0;
   bottom:0;
- 
+}
+
+ul{
+  
+  font-size:12px;
+  text-align:center;
+  list-style-type: none;
+  
+  
+}
+li{
+  display:block;
+  text-align:center;
   
 }
