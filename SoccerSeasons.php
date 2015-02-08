@@ -73,6 +73,21 @@ class SoccerSeasons {
 		
 		return $listTeam;
 	}
-
+	
+	//Return Todays Fixtures
+	public function getTodaysFixtures(){
+		$opts = array(
+ 	 		'http'=>array(
+   			'method'=>"GET",
+    	 		'header'=>"Accept-language: en\r\n" .
+              "Cookie: foo=bar\r\n"
+  				)
+		);
+		$context = stream_context_create($opts);
+		$s = file_get_contents("http://api.football-data.org/alpha/fixtures?timeFrame=n1",false, $context);
+		$todaysFixtures = json_decode($s, true);
+		$fixtures = $todaysFixtures['fixtures'];
+		return $fixtures;
+	}
 }
 ?>
